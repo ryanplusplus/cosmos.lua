@@ -1,4 +1,4 @@
 cosmos.lua
 ==========
 
-Entity-component-system in lua
+Entity-component-system library in lua
