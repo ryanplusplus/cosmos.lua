@@ -34,12 +34,22 @@ describe('The Cosmos ECS', function()
     end)
 
     it('should allow you to add an update system', function()
-      -- cosmos:addUpdateSystem()
-      error('todo')
+      local s = spy.new(function() end)
+
+      cosmos:addUpdateSystem(s)
+      cosmos:update(0.25)
+
+      assert.spy(s).was.called_with(0.25)
     end)
 
     it('should allow you to remove an update system', function()
-      error('todo')
+      local s = spy.new(function() end)
+
+      cosmos:addUpdateSystem(s)
+      cosmos:removeUpdateSystem(s)
+      cosmos:update(0.25)
+
+      assert.spy(s).was.not_called()
     end)
 
     it('should allow you to add update systems with priorities', function()

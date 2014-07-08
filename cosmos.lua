@@ -11,6 +11,22 @@ function Cosmos:newEntity()
   return Entity:new()
 end
 
+function Cosmos:addUpdateSystem(updateSystem)
+  self.updateSystems = self.updateSystems or {}
+  self.updateSystems[updateSystem] = true
+end
+
+function Cosmos:removeUpdateSystem(updateSystem)
+  self.updateSystems = self.updateSystems or {}
+  self.updateSystems[updateSystem] = nil
+end
+
+function Cosmos:update(dt)
+  for updateSystem in pairs(self.updateSystems) do
+    updateSystem(dt)
+  end
+end
+
 Entity = {}
 
 function Entity:new()
