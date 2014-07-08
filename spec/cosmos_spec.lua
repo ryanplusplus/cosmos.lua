@@ -55,5 +55,28 @@ describe('The Cosmos ECS', function()
     it('should allow you to add update systems with priorities', function()
       error('todo')
     end)
+
+    it('should allow you to add a render system', function()
+      local s = spy.new(function() end)
+
+      cosmos:addRenderSystem(s)
+      cosmos:render()
+
+      assert.spy(s).was.called()
+    end)
+
+    it('should allow you to remove a render system', function()
+      local s = spy.new(function() end)
+
+      cosmos:addRenderSystem(s)
+      cosmos:removeRenderSystem(s)
+      cosmos:render()
+
+      assert.spy(s).was.not_called()
+    end)
+
+    it('should allow you to add render systems with priorities', function()
+      error('todo')
+    end)
   end)
 end)
