@@ -56,6 +56,10 @@ describe('The Cosmos ECS', function()
       error('todo')
     end)
 
+    it('should not blow up if you update with no update systems', function()
+      cosmos:update(0.12)
+    end)
+
     it('should allow you to add a render system', function()
       local s = spy.new(function() end)
 
@@ -77,6 +81,10 @@ describe('The Cosmos ECS', function()
 
     it('should allow you to add render systems with priorities', function()
       error('todo')
+    end)
+
+    it('should not blow up if you render with no render systems', function()
+      cosmos:render()
     end)
   end)
 end)
