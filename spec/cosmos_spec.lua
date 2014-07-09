@@ -39,7 +39,19 @@ describe('The Cosmos ECS', function()
       cosmos:addUpdateSystem(s)
       cosmos:update(0.25)
 
-      assert.spy(s).was.called_with(0.25)
+      assert.spy(s).was.called_with(cosmos, 0.25)
+    end)
+
+    it('should allow you to add multiple update systems', function()
+      local s1 = spy.new(function() end)
+      local s2 = spy.new(function() end)
+
+      cosmos:addUpdateSystem(s1)
+      cosmos:addUpdateSystem(s2)
+      cosmos:update(0.25)
+
+      assert.spy(s1).was.called_with(cosmos, 0.25)
+      assert.spy(s2).was.called_with(cosmos, 0.25)
     end)
 
     it('should allow you to remove an update system', function()
@@ -66,7 +78,19 @@ describe('The Cosmos ECS', function()
       cosmos:addRenderSystem(s)
       cosmos:render()
 
-      assert.spy(s).was.called()
+      assert.spy(s).was.called_with(cosmos)
+    end)
+
+    it('should allow you to add multiple render systems', function()
+      local s1 = spy.new(function() end)
+      local s2 = spy.new(function() end)
+
+      cosmos:addRenderSystem(s1)
+      cosmos:addRenderSystem(s2)
+      cosmos:render()
+
+      assert.spy(s1).was.called_with(cosmos)
+      assert.spy(s2).was.called_with(cosmos)
     end)
 
     it('should allow you to remove a render system', function()

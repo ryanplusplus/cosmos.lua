@@ -23,7 +23,7 @@ end
 
 function Cosmos:update(dt)
   for updateSystem in pairs(self.updateSystems) do
-    updateSystem(dt)
+    updateSystem(self, dt)
   end
 end
 
@@ -37,7 +37,7 @@ end
 
 function Cosmos:render()
   for renderSystem in pairs(self.renderSystems) do
-    renderSystem()
+    renderSystem(self)
   end
 end
 
