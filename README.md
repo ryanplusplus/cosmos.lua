@@ -1,4 +1,4 @@
-cosmos.lua
+scene.lua
 ==========
 
-Entity-component-system library in Lua
+Entity-component-system scene library in Lua
