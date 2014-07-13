@@ -1,41 +1,41 @@
-Cosmos = {}
+Scene = {}
 
-function Cosmos:new()
+function Scene:new()
   local o = {}
-  setmetatable(o, Cosmos)
+  setmetatable(o, Scene)
   self.__index = self
   o.updateSystems = {}
   o.renderSystems = {}
   return o
 end
 
-function Cosmos:newEntity()
+function Scene:newEntity()
   return Entity:new()
 end
 
-function Cosmos:addUpdateSystem(updateSystem)
+function Scene:addUpdateSystem(updateSystem)
   self.updateSystems[updateSystem] = true
 end
 
-function Cosmos:removeUpdateSystem(updateSystem)
+function Scene:removeUpdateSystem(updateSystem)
   self.updateSystems[updateSystem] = nil
 end
 
-function Cosmos:update(dt)
+function Scene:update(dt)
   for updateSystem in pairs(self.updateSystems) do
     updateSystem(self, dt)
   end
 end
 
-function Cosmos:addRenderSystem(renderSystem)
+function Scene:addRenderSystem(renderSystem)
   self.renderSystems[renderSystem] = true
 end
 
-function Cosmos:removeRenderSystem(renderSystem)
+function Scene:removeRenderSystem(renderSystem)
   self.renderSystems[renderSystem] = nil
 end
 
-function Cosmos:render()
+function Scene:render()
   for renderSystem in pairs(self.renderSystems) do
     renderSystem(self)
   end
@@ -56,4 +56,4 @@ function Entity:addComponent(name, data)
   self.components[name] = data
 end
 
-return Cosmos
+return Scene
