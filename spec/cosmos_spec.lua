@@ -65,7 +65,20 @@ describe('The Scene ECS', function()
     end)
 
     it('should allow you to add update systems with priorities', function()
-      error('todo')
+      local s1 = spy.new(function() end)
+      local s2 = spy.new(function() end)
+      local s3 = spy.new(function() end)
+
+      scene:addUpdateSystem(s1, 1)
+      scene:addUpdateSystem(s3, 3)
+      scene:addUpdateSystem(s2, 2)
+      scene:update(0.15)
+
+      assert.spy(s1).was.called_with(scene, 0.15)
+      assert.spy(s2).was.called_with(scene, 0.15)
+      assert.spy(s3).was.called_with(scene, 0.15)
+
+      error('need to enforce ordering...')
     end)
 
     it('should not blow up if you update with no update systems', function()
@@ -104,7 +117,20 @@ describe('The Scene ECS', function()
     end)
 
     it('should allow you to add render systems with priorities', function()
-      error('todo')
+      local s1 = spy.new(function() end)
+      local s2 = spy.new(function() end)
+      local s3 = spy.new(function() end)
+
+      scene:addRenderSystem(s1, 1)
+      scene:addRenderSystem(s3, 3)
+      scene:addRenderSystem(s2, 2)
+      scene:render()
+
+      assert.spy(s1).was.called_with(scene)
+      assert.spy(s2).was.called_with(scene)
+      assert.spy(s3).was.called_with(scene)
+
+      error('need to enforce ordering...')
     end)
 
     it('should not blow up if you render with no render systems', function()
