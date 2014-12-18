@@ -1,57 +1,50 @@
-Scene = {}
+local scene_api = {}
+scene_api.__index = scene_api
 
-function Scene:new()
-  local o = {}
-  setmetatable(o, Scene)
-  self.__index = self
-  o.updateSystems = {}
-  o.renderSystems = {}
-  return o
+function Scene()
+  return setmetatable({ render_systems = {}, update_systems = {} }, scene_api)
 end
 
-function Scene:newEntity()
-  return Entity:new()
+function scene_api:new_entity()
+  return Entity()
 end
 
-function Scene:addUpdateSystem(updateSystem)
-  self.updateSystems[updateSystem] = true
+function scene_api:add_update_system(update_system)
+  self.update_systems[update_system] = true
 end
 
-function Scene:removeUpdateSystem(updateSystem)
-  self.updateSystems[updateSystem] = nil
+function scene_api:remove_update_system(update_system)
+  self.update_systems[update_system] = nil
 end
 
-function Scene:update(dt)
-  for updateSystem in pairs(self.updateSystems) do
-    updateSystem(self, dt)
+function scene_api:update(dt)
+  for update_system in pairs(self.update_systems) do
+    update_system(self, dt)
   end
 end
 
-function Scene:addRenderSystem(renderSystem)
-  self.renderSystems[renderSystem] = true
+function scene_api:add_render_system(render_system)
+  self.render_systems[render_system] = true
 end
 
-function Scene:removeRenderSystem(renderSystem)
-  self.renderSystems[renderSystem] = nil
+function scene_api:remove_render_system(render_system)
+  self.render_systems[render_system] = nil
 end
 
-function Scene:render()
-  for renderSystem in pairs(self.renderSystems) do
-    renderSystem(self)
+function scene_api:render()
+  for render_system in pairs(self.render_systems) do
+    render_system(self)
   end
 end
 
-Entity = {}
+entity_api = {}
+entity_api.__index = entity_api
 
-function Entity:new()
-  local o = {}
-  setmetatable(o, Entity)
-  self.__index = self
-  o.components = {}
-  return o
+function Entity()
+  return setmetatable({ components = {} }, entity_api)
 end
 
-function Entity:addComponent(name, data)
+function entity_api:add_component(name, data)
   data = data or {}
   self.components[name] = data
 end
