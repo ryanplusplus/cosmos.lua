@@ -47,7 +47,7 @@ describe('The scene.lua ECS', function()
 
       scene:add_update_system(s)
 
-      mach(s):should_be_called_with(scene, 0.25):
+      s:should_be_called_with(scene, 0.25):
       when(function() scene:update(0.25) end)
     end)
 
@@ -56,9 +56,9 @@ describe('The scene.lua ECS', function()
       scene:add_update_system(s3)
       scene:add_update_system(s2)
 
-      mach(s1):should_be_called_with(scene, 0.25):
-      and_then(mach(s3):should_be_called_with(scene, 0.25)):
-      and_then(mach(s2):should_be_called_with(scene, 0.25)):
+      s1:should_be_called_with(scene, 0.25):
+      and_then(s3:should_be_called_with(scene, 0.25)):
+      and_then(s2:should_be_called_with(scene, 0.25)):
       when(function() scene:update(0.25) end)
     end)
 
@@ -68,8 +68,8 @@ describe('The scene.lua ECS', function()
       scene:add_update_system(s3)
       scene:remove_update_system(s2)
 
-      mach(s1):should_be_called_with(scene, 0.25):
-      and_also(mach(s3):should_be_called_with(scene, 0.25)):
+      s1:should_be_called_with(scene, 0.25):
+      and_also(s3:should_be_called_with(scene, 0.25)):
       when(function() scene:update(0.25) end)
     end)
 
@@ -82,7 +82,7 @@ describe('The scene.lua ECS', function()
 
       scene:add_render_system(s)
 
-      mach(s):should_be_called_with(scene):
+      s:should_be_called_with(scene):
       when(function() scene:render() end)
     end)
 
@@ -91,9 +91,9 @@ describe('The scene.lua ECS', function()
       scene:add_render_system(s3)
       scene:add_render_system(s2)
 
-      mach(s1):should_be_called_with(scene):
-      and_then(mach(s3):should_be_called_with(scene)):
-      and_then(mach(s2):should_be_called_with(scene)):
+      s1:should_be_called_with(scene):
+      and_then(s3:should_be_called_with(scene)):
+      and_then(s2:should_be_called_with(scene)):
       when(function() scene:render() end)
     end)
 
@@ -103,8 +103,8 @@ describe('The scene.lua ECS', function()
       scene:add_render_system(s3)
       scene:remove_render_system(s2)
 
-      mach(s1):should_be_called_with(scene):
-      and_also(mach(s3):should_be_called_with(scene)):
+      s1:should_be_called_with(scene):
+      and_also(s3:should_be_called_with(scene)):
       when(function() scene:render() end)
     end)
 
