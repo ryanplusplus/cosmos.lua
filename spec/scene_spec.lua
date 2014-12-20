@@ -47,8 +47,8 @@ describe('The scene.lua ECS', function()
 
       scene:add_update_system(s)
 
-      s:should_be_called_with(scene, 0.25):
-      when(function() scene:update(0.25) end)
+      s:should_be_called_with(scene, 0.25):when(function() scene:update(0.25)
+      end)
     end)
 
     it('should allow you to add multiple update systems that will be invoked in order', function()
@@ -56,10 +56,10 @@ describe('The scene.lua ECS', function()
       scene:add_update_system(s3)
       scene:add_update_system(s2)
 
-      s1:should_be_called_with(scene, 0.25):
-      and_then(s3:should_be_called_with(scene, 0.25)):
-      and_then(s2:should_be_called_with(scene, 0.25)):
-      when(function() scene:update(0.25) end)
+      s1:should_be_called_with(scene, 0.5):
+        and_then(s3:should_be_called_with(scene, 0.5)):
+        and_then(s2:should_be_called_with(scene, 0.5)):
+        when(function() scene:update(0.5) end)
     end)
 
     it('should allow you to remove an update system', function()
@@ -68,9 +68,9 @@ describe('The scene.lua ECS', function()
       scene:add_update_system(s3)
       scene:remove_update_system(s2)
 
-      s1:should_be_called_with(scene, 0.25):
-      and_also(s3:should_be_called_with(scene, 0.25)):
-      when(function() scene:update(0.25) end)
+      s1:should_be_called_with(scene, 0.75):
+        and_also(s3:should_be_called_with(scene, 0.75)):
+        when(function() scene:update(0.75) end)
     end)
 
     it('should not blow up if you update with no update systems', function()
@@ -82,8 +82,7 @@ describe('The scene.lua ECS', function()
 
       scene:add_render_system(s)
 
-      s:should_be_called_with(scene):
-      when(function() scene:render() end)
+      s:should_be_called_with(scene):when(function() scene:render() end)
     end)
 
     it('should allow you to add multiple render systems that will be invoked in order', function()
@@ -92,9 +91,9 @@ describe('The scene.lua ECS', function()
       scene:add_render_system(s2)
 
       s1:should_be_called_with(scene):
-      and_then(s3:should_be_called_with(scene)):
-      and_then(s2:should_be_called_with(scene)):
-      when(function() scene:render() end)
+        and_then(s3:should_be_called_with(scene)):
+        and_then(s2:should_be_called_with(scene)):
+        when(function() scene:render() end)
     end)
 
     it('should allow you to remove a render system', function()
@@ -104,8 +103,8 @@ describe('The scene.lua ECS', function()
       scene:remove_render_system(s2)
 
       s1:should_be_called_with(scene):
-      and_also(s3:should_be_called_with(scene)):
-      when(function() scene:render() end)
+        and_also(s3:should_be_called_with(scene)):
+        when(function() scene:render() end)
     end)
 
     it('should not blow up if you render with no render systems', function()
