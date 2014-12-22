@@ -81,20 +81,12 @@ end
 
 entity_api = {}
 entity_api.__index = entity_api
+entity_api.__newindex = function(t, k, v)
+  rawset(t, k, v)
+end
 
 function Entity()
-  return setmetatable({ }, entity_api)
-end
-
-function entity_api:add_component(name, data)
-  data = data or {}
-  self[name] = data
-  return self
-end
-
-function entity_api:remove_component(name)
-  self[name] = nil
-  return self
+  return setmetatable({}, entity_api)
 end
 
 return Scene

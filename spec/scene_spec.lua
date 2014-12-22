@@ -26,36 +26,27 @@ describe('The scene.lua ECS', function()
     end)
 
     it('should allow you to create a new entity with no components', function()
-      local some_entity = scene:new_entity()
+      local entity = scene:new_entity()
 
-      assert.is_not.falsy(some_entity)
+      assert.is_not.falsy(entity)
 
-      for component in pairs(some_entity) do
+      for component in pairs(entity) do
         assert.falsy('should have no components')
       end
     end)
 
     it('should allow you to add a component to an entity', function()
-      local some_entity = scene:new_entity()
-      some_entity:add_component('component')
-
-      assert.is_not.falsy(some_entity.component)
-    end)
-
-    it('should allow you to add a component with data to an entity', function()
-      local some_entity = scene:new_entity()
-      local component_data = {a = 1, b = 2}
-      some_entity:add_component('component_with_data', component_data)
-
-      assert.is.equal(component_data, some_entity.component_with_data)
+      local entity = scene:new_entity()
+      entity.component = 5
+      assert.is.equal(5, entity.component)
     end)
 
     it('should allow you to remove a component from an entity', function()
       local entity = scene:new_entity()
-        :add_component('some_component')
-        :remove_component('some_component')
+      entity.component = {}
+      entity.component = nil
 
-      assert.is.falsy(entity.some_component)
+      assert.is.falsy(entity.component)
     end)
 
     it('should allow you to get a list of all entities', function()
@@ -68,11 +59,14 @@ describe('The scene.lua ECS', function()
 
     it('should allow you to get a list of all entities that have multiple components', function()
       for i = 1, 5 do
-        scene:new_entity():add_component('component1'):add_component('component2')
+        local entity = scene:new_entity()
+        entity.component1 = true
+        entity.component2 = true
       end
 
       for i = 1, 5 do
-        scene:new_entity():add_component('component1')
+        local entity = scene:new_entity()
+        entity.component1 = true
       end
 
       local entities_with_component = scene:entities_with('component1', 'component2')
@@ -87,11 +81,11 @@ describe('The scene.lua ECS', function()
 
     it('should allow you to get a list of all entities that have a component', function()
       for i = 1, 5 do
-        scene:new_entity():add_component('some_component')
+        scene:new_entity().some_component = true
       end
 
       for i = 1, 5 do
-        scene:new_entity():add_component('another_component')
+        scene:new_entity().another_component = true
       end
 
       local entities_with_component = scene:entities_with('some_component')
