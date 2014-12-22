@@ -92,4 +92,9 @@ function entity_api:add_component(name, data)
   return self
 end
 
+function entity_api:remove_component(name)
+  self[name] = nil
+  return self
+end
+
 return Scene
