@@ -19,7 +19,7 @@ function Scene()
   local scene = {
     render_systems = {},
     update_systems = {},
-    entities = {}
+    _entities = {}
   }
 
   return setmetatable(scene, scene_api)
@@ -27,17 +27,26 @@ end
 
 function scene_api:new_entity()
   local entity = Entity()
-  self.entities[entity] = true
+  self._entities[entity] = true
   return entity
 end
 
-function scene_api:entities_with(component)
-  local entities_with = {}
+function scene_api:entities()
+  return self._entities
+end
 
-  for entity in pairs(self.entities) do
-    if entity[component] then
-      table.insert(entities_with, entity)
+function scene_api:entities_with(...)
+  local entities_with = {}
+  local components = table.pack(...)
+
+  for entity in pairs(self._entities) do
+    local has_all = true
+
+    for _, component in ipairs(components) do
+      if not entity[component] then has_all = false end
     end
+
+    if has_all then entities_with[entity] = true end
   end
 
   return entities_with
@@ -81,6 +90,7 @@ end
 function entity_api:add_component(name, data)
   data = data or {}
   self[name] = data
+  return self
 end
 
 return Scene

@@ -2,6 +2,14 @@ describe('The scene.lua ECS', function()
   local Scene = require 'scene'
   local mach = require 'mach'
 
+  local function count(t)
+    local count = 0
+
+    for _ in pairs(t) do count = count + 1 end
+
+    return count
+  end
+
   it('should allow you to create a new scene', function()
     Scene()
   end)
@@ -42,6 +50,33 @@ describe('The scene.lua ECS', function()
       assert.is.equal(component_data, some_entity.component_with_data)
     end)
 
+    it('should allow you to get a list of all entities', function()
+      for i = 1, 5 do
+        scene:new_entity()
+      end
+
+      assert.is.equal(5, count(scene:entities()))
+    end)
+
+    it('should allow you to get a list of all entities that have multiple components', function()
+      for i = 1, 5 do
+        scene:new_entity():add_component('component1'):add_component('component2')
+      end
+
+      for i = 1, 5 do
+        scene:new_entity():add_component('component1')
+      end
+
+      local entities_with_component = scene:entities_with('component1', 'component2')
+
+      assert.is.equal(5, count(entities_with_component))
+
+      for entity in pairs(entities_with_component) do
+        assert.is_not.falsy(entity.component1)
+        assert.is_not.falsy(entity.component2)
+      end
+    end)
+
     it('should allow you to get a list of all entities that have a component', function()
       for i = 1, 5 do
         scene:new_entity():add_component('some_component')
@@ -53,9 +88,9 @@ describe('The scene.lua ECS', function()
 
       local entities_with_component = scene:entities_with('some_component')
 
-      assert.is.equal(5, #entities_with_component)
+      assert.is.equal(5, count(entities_with_component))
 
-      for _, entity in ipairs(entities_with_component) do
+      for entity in pairs(entities_with_component) do
         assert.is_not.falsy(entity.some_component)
       end
     end)
