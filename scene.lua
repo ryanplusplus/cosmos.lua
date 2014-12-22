@@ -1,6 +1,3 @@
--- local scene_api = {}
--- scene_api.__index = scene_api
-
 function remove_value(t, value)
   local to_remove = {}
 
