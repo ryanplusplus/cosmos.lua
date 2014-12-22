@@ -50,6 +50,14 @@ describe('The scene.lua ECS', function()
       assert.is.equal(component_data, some_entity.component_with_data)
     end)
 
+    it('should allow you to remove a component from an entity', function()
+      local entity = scene:new_entity()
+        :add_component('some_component')
+        :remove_component('some_component')
+
+      assert.is.falsy(entity.some_component)
+    end)
+
     it('should allow you to get a list of all entities', function()
       for i = 1, 5 do
         scene:new_entity()
@@ -107,10 +115,10 @@ describe('The scene.lua ECS', function()
     it('should allow you to add multiple update systems that will be invoked in order', function()
       scene:add_update_system(s1):add_update_system(s3):add_update_system(s2)
 
-      s1:should_be_called_with(scene, 0.5):
-        and_then(s3:should_be_called_with(scene, 0.5)):
-        and_then(s2:should_be_called_with(scene, 0.5)):
-        when(function() scene:update(0.5) end)
+      s1:should_be_called_with(scene, 0.5)
+        :and_then(s3:should_be_called_with(scene, 0.5))
+        :and_then(s2:should_be_called_with(scene, 0.5))
+        :when(function() scene:update(0.5) end)
     end)
 
     it('should allow you to remove update systems', function()
@@ -137,10 +145,10 @@ describe('The scene.lua ECS', function()
       scene:add_render_system(s3)
       scene:add_render_system(s2)
 
-      s1:should_be_called_with(scene):
-        and_then(s3:should_be_called_with(scene)):
-        and_then(s2:should_be_called_with(scene)):
-        when(function() scene:render() end)
+      s1:should_be_called_with(scene)
+        :and_then(s3:should_be_called_with(scene))
+        :and_then(s2:should_be_called_with(scene))
+        :when(function() scene:render() end)
     end)
 
     it('should allow you to remove render systems', function()
