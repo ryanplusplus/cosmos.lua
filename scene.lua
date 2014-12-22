@@ -50,10 +50,12 @@ function Scene()
 
     add_update_system = function(self, update_system)
       table.insert(update_systems, update_system)
+      return self
     end,
 
     remove_update_system = function(self, update_system)
       remove_value(update_systems, update_system)
+      return self
     end,
 
     update = function(self, dt)
@@ -64,10 +66,12 @@ function Scene()
 
     add_render_system = function(self, render_system)
       table.insert(render_systems, render_system)
+      return self
     end,
 
     remove_render_system = function(self, render_system)
       remove_value(render_systems, render_system)
+      return self
     end,
 
     render = function(self)

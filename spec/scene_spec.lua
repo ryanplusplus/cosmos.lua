@@ -105,9 +105,7 @@ describe('The scene.lua ECS', function()
     end)
 
     it('should allow you to add multiple update systems that will be invoked in order', function()
-      scene:add_update_system(s1)
-      scene:add_update_system(s3)
-      scene:add_update_system(s2)
+      scene:add_update_system(s1):add_update_system(s3):add_update_system(s2)
 
       s1:should_be_called_with(scene, 0.5):
         and_then(s3:should_be_called_with(scene, 0.5)):
@@ -115,15 +113,11 @@ describe('The scene.lua ECS', function()
         when(function() scene:update(0.5) end)
     end)
 
-    it('should allow you to remove an update system', function()
-      scene:add_update_system(s1)
-      scene:add_update_system(s2)
-      scene:add_update_system(s3)
-      scene:remove_update_system(s2)
+    it('should allow you to remove update systems', function()
+      scene:add_update_system(s1):add_update_system(s2):add_update_system(s3)
+      scene:remove_update_system(s2):remove_update_system(s1)
 
-      s1:should_be_called_with(scene, 0.75):
-        and_also(s3:should_be_called_with(scene, 0.75)):
-        when(function() scene:update(0.75) end)
+      s3:should_be_called_with(scene, 0.75):when(function() scene:update(0.75) end)
     end)
 
     it('should not blow up if you update with no update systems', function()
@@ -149,15 +143,11 @@ describe('The scene.lua ECS', function()
         when(function() scene:render() end)
     end)
 
-    it('should allow you to remove a render system', function()
-      scene:add_render_system(s1)
-      scene:add_render_system(s2)
-      scene:add_render_system(s3)
-      scene:remove_render_system(s2)
+    it('should allow you to remove render systems', function()
+      scene:add_render_system(s1):add_render_system(s2):add_render_system(s3)
+      scene:remove_render_system(s2):remove_render_system(s1)
 
-      s1:should_be_called_with(scene):
-        and_also(s3:should_be_called_with(scene)):
-        when(function() scene:render() end)
+      s3:should_be_called_with(scene):when(function() scene:render() end)
     end)
 
     it('should not blow up if you render with no render systems', function()
