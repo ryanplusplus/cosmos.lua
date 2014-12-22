@@ -22,7 +22,7 @@ describe('The scene.lua ECS', function()
 
       assert.is_not.falsy(some_entity)
 
-      for _ in pairs(some_entity.components) do
+      for component in pairs(some_entity) do
         assert.falsy('should have no components')
       end
     end)
@@ -31,7 +31,7 @@ describe('The scene.lua ECS', function()
       local some_entity = scene:new_entity()
       some_entity:add_component('component')
 
-      assert.is_not.falsy(some_entity.components.component)
+      assert.is_not.falsy(some_entity.component)
     end)
 
     it('should allow you to add a component with data to an entity', function()
@@ -39,7 +39,25 @@ describe('The scene.lua ECS', function()
       local component_data = {a = 1, b = 2}
       some_entity:add_component('component_with_data', component_data)
 
-      assert.is.equal(component_data, some_entity.components.component_with_data)
+      assert.is.equal(component_data, some_entity.component_with_data)
+    end)
+
+    it('should allow you to get a list of all entities that have a component', function()
+      for i = 1, 5 do
+        scene:new_entity():add_component('some_component')
+      end
+
+      for i = 1, 5 do
+        scene:new_entity():add_component('another_component')
+      end
+
+      local entities_with_component = scene:entities_with('some_component')
+
+      assert.is.equal(5, #entities_with_component)
+
+      for _, entity in ipairs(entities_with_component) do
+        assert.is_not.falsy(entity.some_component)
+      end
     end)
 
     it('should allow you to add an update system', function()

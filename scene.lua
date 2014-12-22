@@ -16,11 +16,31 @@ function remove_value(t, value)
 end
 
 function Scene()
-  return setmetatable({ render_systems = {}, update_systems = {} }, scene_api)
+  local scene = {
+    render_systems = {},
+    update_systems = {},
+    entities = {}
+  }
+
+  return setmetatable(scene, scene_api)
 end
 
 function scene_api:new_entity()
-  return Entity()
+  local entity = Entity()
+  self.entities[entity] = true
+  return entity
+end
+
+function scene_api:entities_with(component)
+  local entities_with = {}
+
+  for entity in pairs(self.entities) do
+    if entity[component] then
+      table.insert(entities_with, entity)
+    end
+  end
+
+  return entities_with
 end
 
 function scene_api:add_update_system(update_system)
@@ -55,12 +75,12 @@ entity_api = {}
 entity_api.__index = entity_api
 
 function Entity()
-  return setmetatable({ components = {} }, entity_api)
+  return setmetatable({ }, entity_api)
 end
 
 function entity_api:add_component(name, data)
   data = data or {}
-  self.components[name] = data
+  self[name] = data
 end
 
 return Scene
