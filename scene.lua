@@ -88,7 +88,6 @@ function Entity()
     end,
 
     __newindex = function(t, k, v)
-      if v == nil then print('removing', k) end
       proxy[k] = v
     end
   })
