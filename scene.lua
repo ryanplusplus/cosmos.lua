@@ -12,35 +12,77 @@ function remove_value(t, value)
   end
 end
 
+function has_components(entity, components)
+  local has_all = true
+
+  for _, component in ipairs(components) do
+    if not entity[component] then has_all = false end
+  end
+
+  return has_all
+end
+
+function update_caches(caches, entity)
+  for s, cache in pairs(caches) do
+    cache.entities[entity] = has_components(entity, cache.components) or nil
+  end
+end
+
 function Scene()
   local render_systems = {}
   local update_systems = {}
   local entities = {}
+  local caches = {}
+
+  function Entity()
+    local proxy = {}
+
+    return setmetatable({}, {
+      __index = function(entity, component)
+        return proxy[component]
+      end,
+
+      __newindex = function(entity, component, v)
+        if v == nil or proxy[component] == nil then
+          proxy[component] = v
+          update_caches(caches, entity)
+        else
+          proxy[component] = v
+        end
+      end
+    })
+  end
 
   return {
-    new_entity = function()
+    new_entity = function(self)
       local entity = Entity()
       entities[entity] = true
       return entity
     end,
 
-    entities = function()
+    entities = function(self)
       return entities
     end,
 
     entities_with = function(self, ...)
       local entities_with = {}
       local components = table.pack(...)
+      local component_string = table.concat(components, ';')
+
+      if caches[component_string] then
+        return caches[component_string].entities
+      end
 
       for entity in pairs(entities) do
-        local has_all = true
-
-        for _, component in ipairs(components) do
-          if not entity[component] then has_all = false end
+        if has_components(entity, components) then
+          entities_with[entity] = true
         end
-
-        if has_all then entities_with[entity] = true end
       end
+
+      caches[component_string] = {
+        components = components,
+        entities = entities_with
+      }
 
       return entities_with
     end,
@@ -77,20 +119,6 @@ function Scene()
       end
     end
   }
-end
-
-function Entity()
-  local proxy = {}
-
-  return setmetatable({}, {
-    __index = function(t, k)
-      return proxy[k]
-    end,
-
-    __newindex = function(t, k, v)
-      proxy[k] = v
-    end
-  })
 end
 
 return Scene

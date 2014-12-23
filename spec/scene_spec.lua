@@ -97,6 +97,54 @@ describe('The scene.lua ECS', function()
       end
     end)
 
+    it('should cache entity requests to remain performant', function()
+      local start = os.clock()
+
+      for i = 1, 1000 do
+        local entity = scene:new_entity()
+        entity.c1 = true
+        entity.c2 = true
+      end
+
+      for i = 1, 10000 do
+        scene:entities_with('c1', 'c2')
+        scene:entities_with('c1')
+      end
+
+      assert(os.difftime(os.clock(), start) <= 1, 'implementation is too slow')
+    end)
+
+    it('should update entity caches when components are added #hi', function()
+      local e1 = scene:new_entity()
+      e1.c1 = true
+      e1.c2 = true
+
+      local e2 = scene:new_entity()
+      e2.c1 = true
+
+      scene:entities_with('c1', 'c2')
+
+      e2.c2 = true
+
+      assert.is_not.falsy(scene:entities_with('c1', 'c2')[e2])
+    end)
+
+    it('should update entity caches when components are removed', function()
+      local e1 = scene:new_entity()
+      e1.c1 = true
+      e1.c2 = true
+
+      local e2 = scene:new_entity()
+      e2.c1 = true
+      e2.c2 = true
+
+      scene:entities_with('c1', 'c2')
+
+      e2.c2 = nil
+
+      assert.is.falsy(scene:entities_with('c1', 'c2')[e2])
+    end)
+
     it('should allow you to add an update system', function()
       local s = mach.mock_function('s')
 
