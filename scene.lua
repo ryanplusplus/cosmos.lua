@@ -79,14 +79,19 @@ function Scene()
   }
 end
 
-entity_api = {}
-entity_api.__index = entity_api
-entity_api.__newindex = function(t, k, v)
-  rawset(t, k, v)
-end
-
 function Entity()
-  return setmetatable({}, entity_api)
+  local proxy = {}
+
+  return setmetatable({}, {
+    __index = function(t, k)
+      return proxy[k]
+    end,
+
+    __newindex = function(t, k, v)
+      if v == nil then print('removing', k) end
+      proxy[k] = v
+    end
+  })
 end
 
 return Scene
