@@ -35,19 +35,19 @@ function Scene()
   local caches = {}
 
   function Entity()
-    local proxy = {}
+    local components = {}
 
     return setmetatable({}, {
       __index = function(entity, component)
-        return proxy[component]
+        return components[component]
       end,
 
       __newindex = function(entity, component, v)
-        if v == nil or proxy[component] == nil then
-          proxy[component] = v
+        if v == nil or components[component] == nil then
+          components[component] = v
           update_caches(caches, entity)
         else
-          proxy[component] = v
+          components[component] = v
         end
       end
     })
