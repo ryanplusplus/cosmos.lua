@@ -9,8 +9,8 @@ description = {
   license = 'MIT <http://opensource.org/licenses/MIT>'
 }
 dependencies = {
-  'lua >= 5.2',
-  'mach >= 3.0-0'
+  'lua >= 5.1',
+  'mach >= 3.0-1'
 }
 build = {
   type = 'builtin',
