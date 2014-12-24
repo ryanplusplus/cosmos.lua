@@ -60,6 +60,10 @@ function Scene()
       return entity
     end,
 
+    remove_entity = function(self, entity)
+      entities[entity] = nil
+    end,
+
     entities = function(self)
       return entities
     end,

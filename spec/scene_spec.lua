@@ -20,14 +20,22 @@ describe('The scene.lua ECS', function()
     scene = Scene()
   end)
 
-  it('should allow you to create a new entity with no components', function()
+  it('should allow you to create a new entity', function()
     local entity = scene:new_entity()
 
     assert.is_not.falsy(entity)
 
-    for component in pairs(entity) do
-      assert.falsy('should have no components')
+    assert.is.equal(1, count(scene:entities()))
+
+    for e in pairs(scene:entities()) do
+      assert.is.equal(entity, e)
     end
+  end)
+
+  it('should allow you to remove an entity', function()
+    scene:remove_entity(scene:new_entity())
+
+    assert.is.equal(0, count(scene:entities()))
   end)
 
   it('should allow you to add a component to an entity', function()

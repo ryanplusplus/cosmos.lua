@@ -26,6 +26,12 @@ local scene = Scene()
 local entity = scene:new_entity()
 ```
 
+### Removing an Entity
+
+```lua
+scene:remove_entity(entity)
+```
+
 ### Adding a Component to an Entity
 
 ```lua
