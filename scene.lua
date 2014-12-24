@@ -1,3 +1,9 @@
+if not table.pack then
+  function table.pack (...)
+    return { n = select('#', ...); ... }
+  end
+end
+
 function remove_value(t, value)
   local to_remove = {}
 
