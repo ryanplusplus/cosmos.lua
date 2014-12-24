@@ -5,10 +5,12 @@ Entity-component-system scene library in Lua
 
 ## Development Dependencies
 ### Mach
-luarocks install mach
+
+    luarocks install mach
 
 ### Busted
-luarocks install busted
+
+    luarocks install busted
 
 ## Usage
 ### Creating a Scene
