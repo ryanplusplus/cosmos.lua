@@ -25,23 +25,35 @@ describe('The scene.lua ECS', function()
 
     assert.is_not.falsy(entity)
 
-    assert.is.equal(1, count(scene:entities()))
+    assert.are.equal(1, count(scene:entities()))
 
     for e in pairs(scene:entities()) do
-      assert.is.equal(entity, e)
+      assert.are.equal(entity, e)
     end
+  end)
+
+  it('should allow you to create a new entity with components', function()
+    local entity = scene:new_entity({
+      a = 1,
+      b = true
+    })
+
+    assert.are.equal(1, entity.a)
+    assert.are.equal(true, entity.b)
+
+    assert.are.equal(1, count(scene:entities_with('a', 'b')))
   end)
 
   it('should allow you to remove an entity', function()
     scene:remove_entity(scene:new_entity())
 
-    assert.is.equal(0, count(scene:entities()))
+    assert.are.equal(0, count(scene:entities()))
   end)
 
   it('should allow you to add a component to an entity', function()
     local entity = scene:new_entity()
     entity.component = 5
-    assert.is.equal(5, entity.component)
+    assert.are.equal(5, entity.component)
   end)
 
   it('should allow you to remove a component from an entity', function()
@@ -57,7 +69,7 @@ describe('The scene.lua ECS', function()
       scene:new_entity()
     end
 
-    assert.is.equal(5, count(scene:entities()))
+    assert.are.equal(5, count(scene:entities()))
   end)
 
   it('should allow you to get a list of all entities that have multiple components', function()
@@ -74,7 +86,7 @@ describe('The scene.lua ECS', function()
 
     local entities_with_component = scene:entities_with('component1', 'component2')
 
-    assert.is.equal(5, count(entities_with_component))
+    assert.are.equal(5, count(entities_with_component))
 
     for entity in pairs(entities_with_component) do
       assert.is_not.falsy(entity.component1)
@@ -93,7 +105,7 @@ describe('The scene.lua ECS', function()
 
     local entities_with_component = scene:entities_with('some_component')
 
-    assert.is.equal(5, count(entities_with_component))
+    assert.are.equal(5, count(entities_with_component))
 
     for entity in pairs(entities_with_component) do
       assert.is_not.falsy(entity.some_component)

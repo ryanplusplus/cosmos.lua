@@ -60,9 +60,16 @@ function Scene()
   end
 
   return {
-    new_entity = function(self)
+    new_entity = function(self, components)
+      components = components or {}
+
       local entity = Entity()
       entities[entity] = true
+
+      for k, v in pairs(components) do
+        entity[k] = v
+      end
+
       return entity
     end,
 
