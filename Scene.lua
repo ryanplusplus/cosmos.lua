@@ -29,7 +29,7 @@ function has_components(entity, components)
 end
 
 function update_caches(caches, entity)
-  for s, cache in pairs(caches) do
+  for _, cache in pairs(caches) do
     cache.entities[entity] = has_components(entity, cache.components) or nil
   end
 end
