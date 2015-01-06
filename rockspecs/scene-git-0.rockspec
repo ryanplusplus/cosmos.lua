@@ -15,6 +15,6 @@ dependencies = {
 build = {
   type = 'builtin',
   modules = {
-    ['scene'] = 'scene.lua'
+    ['Scene'] = 'Scene.lua'
   }
 }

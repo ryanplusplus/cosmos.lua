@@ -1,5 +1,5 @@
 describe('The scene.lua ECS', function()
-  local Scene = require 'scene'
+  local Scene = require 'Scene'
   local mach = require 'mach'
 
   local function count(t)
