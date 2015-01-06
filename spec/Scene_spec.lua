@@ -129,13 +129,28 @@ describe('The scene.lua ECS', function()
     assert(os.difftime(os.clock(), start) <= 1, 'implementation is too slow')
   end)
 
-  it('should update entity caches when components are added #hi', function()
+  it('should update entity caches when components are added', function()
     local e1 = scene:new_entity()
     e1.c1 = true
     e1.c2 = true
 
     local e2 = scene:new_entity()
     e2.c1 = true
+
+    scene:entities_with('c1', 'c2')
+
+    e2.c2 = true
+
+    assert.is_not.falsy(scene:entities_with('c1', 'c2')[e2])
+  end)
+
+  it('should update entity caches when false components are added', function()
+    local e1 = scene:new_entity()
+    e1.c1 = true
+    e1.c2 = true
+
+    local e2 = scene:new_entity()
+    e2.c1 = false
 
     scene:entities_with('c1', 'c2')
 

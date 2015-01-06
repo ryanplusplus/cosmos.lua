@@ -22,7 +22,7 @@ function has_components(entity, components)
   local has_all = true
 
   for _, component in ipairs(components) do
-    if not entity[component] then has_all = false end
+    if entity[component] == nil then has_all = false end
   end
 
   return has_all
@@ -30,10 +30,7 @@ end
 
 function update_caches(caches, entity)
   for _, cache in pairs(caches) do
-    print(_)
-    print('current', cache.entities[entity])
     cache.entities[entity] = has_components(entity, cache.components) or nil
-    print('updated', cache.entities[entity])
   end
 end
 
