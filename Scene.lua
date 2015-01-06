@@ -29,8 +29,19 @@ function has_components(entity, components)
 end
 
 function update_caches(caches, entity)
-  for _, cache in pairs(caches) do
-    cache.entities[entity] = has_components(entity, cache.components) or nil
+  local invalidated_caches = {}
+
+  for k, cache in pairs(caches) do
+    local updated = has_components(entity, cache.components)
+    local current = cache.entities[entity] ~= nil
+
+    if (current and not updated) or (not current and updated) then
+      table.insert(invalidated_caches, k)
+    end
+  end
+
+  for _, k in pairs(invalidated_caches) do
+    caches[k] = nil
   end
 end
 
