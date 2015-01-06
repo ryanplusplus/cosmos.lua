@@ -30,7 +30,9 @@ end
 
 function update_caches(caches, entity)
   for _, cache in pairs(caches) do
+    print(_)
     cache.entities[entity] = has_components(entity, cache.components) or nil
+    print('has?', cache.entities[entity])
   end
 end
 
