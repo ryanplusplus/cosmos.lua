@@ -59,6 +59,14 @@ describe('The scene.lua ECS', function()
     assert.are.equal(0, count(scene:entities_with('a')))
   end)
 
+  it('should update caches when an entity is added', function()
+    scene:new_entity({ a = 1 })
+    scene:entities_with('a')
+    scene:new_entity({ a = 1 })
+
+    assert.are.equal(2, count(scene:entities_with('a')))
+  end)
+
   it('should allow you to add a component to an entity', function()
     local entity = scene:new_entity()
     entity.component = 5

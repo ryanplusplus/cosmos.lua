@@ -35,7 +35,9 @@ function update_caches(caches, entity)
     local updated = has_components(entity, cache.components)
     local current = cache.entities[entity] ~= nil
 
-    if (current and not updated) or (not current and updated) then
+    if (current and not updated) then
+      cache.entities[entity] = nil
+    elseif (not current and updated) then
       table.insert(invalidated_caches, k)
     end
   end
