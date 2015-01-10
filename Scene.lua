@@ -74,7 +74,11 @@ function Scene()
         else
           components[component] = v
         end
-      end
+      end,
+
+      __ipairs = function() return ipairs(components) end,
+
+      __pairs = function() return pairs(components) end
     })
   end
 

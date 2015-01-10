@@ -254,4 +254,36 @@ describe('The scene.lua ECS', function()
   it('should not blow up if you update with no update systems', function()
     scene:update(0.1)
   end)
+
+  it('should allow components in an entity to be iterated with ipairs', function()
+    scene:new_entity({ 1, 2 })
+
+    for entity in pairs(scene:entities()) do
+      local count = 0
+
+      for i, value in ipairs(entity) do
+        assert.are.equal(i, value)
+        count = count + 1
+      end
+
+      assert.are.equal(2, count)
+    end
+  end)
+
+  it('should allow components in an entity to be iterated with pairs', function()
+    local components = { a = 1, b = 2 }
+
+    scene:new_entity(components)
+
+    for entity in pairs(scene:entities()) do
+      local count = 0
+
+      for component, value in pairs(entity) do
+        assert.are.equal(components[component], value)
+        count = count + 1
+      end
+
+      assert.are.equal(2, count)
+    end
+  end)
 end)
