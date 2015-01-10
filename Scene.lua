@@ -45,6 +45,12 @@ function update_caches(caches, entity)
   end
 end
 
+function remove_from_caches(caches, entity)
+  for _, cache in pairs(caches) do
+    cache.entities[entity] = nil
+  end
+end
+
 function Scene()
   local render_systems = {}
   local update_systems = {}
@@ -86,6 +92,7 @@ function Scene()
 
     remove_entity = function(self, entity)
       entities[entity] = nil
+      remove_from_caches(caches, entity)
     end,
 
     entities = function(self)
