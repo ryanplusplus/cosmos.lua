@@ -82,6 +82,29 @@ function Scene()
     })
   end
 
+  function entities_with(self, ...)
+    local entities_with = {}
+    local components = table.pack(...)
+    local component_string = table.concat(components, ';')
+
+    if caches[component_string] then
+      return caches[component_string].entities
+    end
+
+    for entity in pairs(entities) do
+      if has_components(entity, components) then
+        entities_with[entity] = true
+      end
+    end
+
+    caches[component_string] = {
+      components = components,
+      entities = entities_with
+    }
+
+    return entities_with
+  end
+
   return {
     new_entity = function(self, components)
       components = components or {}
@@ -101,31 +124,10 @@ function Scene()
       remove_from_caches(caches, entity)
     end,
 
+    entities_with = entities_with,
+
     entities = function(self)
-      return entities
-    end,
-
-    entities_with = function(self, ...)
-      local entities_with = {}
-      local components = table.pack(...)
-      local component_string = table.concat(components, ';')
-
-      if caches[component_string] then
-        return caches[component_string].entities
-      end
-
-      for entity in pairs(entities) do
-        if has_components(entity, components) then
-          entities_with[entity] = true
-        end
-      end
-
-      caches[component_string] = {
-        components = components,
-        entities = entities_with
-      }
-
-      return entities_with
+      return entities_with(self)
     end,
 
     add_update_system = function(self, update_system)
